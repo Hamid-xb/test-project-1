@@ -12,18 +12,9 @@ services:
     depends_on:
       - test-db
       - test-redis
+    command: >
+        bash -c "echo 'DocumentRoot /var/www/html/public' > /etc/apache2/sites-available/000-default.conf && apache2-foreground"
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx-server
-    ports:
-      - "9004:80"
-    volumes:
-      - ../:/usr/share/nginx/html
-    networks:
-      - indiemassive
-    depends_on:
-      - webserver
 
   test-db:
     image: mariadb:latest
