@@ -1,0 +1,48 @@
+version: '3'
+services:
+  webserver:
+    build: .
+    container_name: test-app
+    volumes:
+      - ../public:/var/www/html
+    ports:
+      - "9003:80"
+    networks:
+      - indiemassive
+    depends_on:
+      - test-db
+      - test-redis
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    ports:
+      - "9004:80"
+    volumes:
+      - ../public:/usr/share/nginx/html
+    networks:
+      - indiemassive
+    depends_on:
+      - webserver
+
+  test-db:
+    image: mariadb:latest
+    container_name: test-db
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - "33306:3306"
+    networks:
+      - indiemassive
+
+  test-redis:
+    image: redis:latest
+    container_name: test-redis
+    ports:
+      - "36079:6379"
+    networks:
+      - indiemassive
+
+networks:
+  indiemassive:
+    driver: bridge

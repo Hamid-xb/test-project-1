@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Bouw de Docker containers met Docker Compose
+docker-compose --env-file=docker.env build --no-cache
+
+# Start de containers in de detached modus
+docker-compose --env-file=docker.env up -d
+
+# Toon de draaiende containers
+docker ps
